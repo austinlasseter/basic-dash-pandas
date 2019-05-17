@@ -14,19 +14,19 @@ server = app.server
 app.title='Titanic!'
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
+
+
 ###### Import a dataframe #######
 df = pd.read_csv("https://raw.githubusercontent.com/austinlasseter/plotly_dash_tutorial/master/00%20resources/titanic.csv")
-
 var_list=['Age', 'Fare', 'Survived', 'Pclass']
-
 
 
 
 ####### Layout of the app ########
 app.layout = html.Div([
-    html.H3('Choose a color from the list:'),
+    html.H3('Choose a variable from the list:'),
     dcc.Dropdown(
-        id='my-dropdown-input',
+        id='my-input-window',
         options=[{'label': i, 'value': i} for i in colors_list],
         value=var_list[0]
     ),
@@ -35,9 +35,10 @@ app.layout = html.Div([
 ])
 
 
+
 ######### Interactive callbacks go here #########
 @app.callback(dash.dependencies.Output('my-output-window', 'figure'),
-              [dash.dependencies.Input('my-dropdown-input', 'value')])
+              [dash.dependencies.Input('my-input-window', 'value')])
 def display_value(user_input):
     results = df.groupby('Embarked')[user_input].mean()
     mydata = [go.Bar(x = results.index,
@@ -48,6 +49,7 @@ def display_value(user_input):
                          yaxis = dict(title='this is my y-axis'))
     myfig = go.Figure(data=mydata, layout=mylayout)
     return myfig
+
 
 
 ######### Run the app #########
