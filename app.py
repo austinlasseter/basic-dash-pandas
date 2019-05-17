@@ -26,18 +26,18 @@ colors_list=['Age', 'Fare', 'Survived', 'Pclass']
 app.layout = html.Div([
     html.H3('Choose a color from the list:'),
     dcc.Dropdown(
-        id='dropdown',
+        id='my-dropdown-input',
         options=[{'label': i, 'value': i} for i in colors_list],
         value=colors_list[0]
     ),
     html.Br(),
-    dcc.Graph(id='display-value')
+    dcc.Graph(id='my-output-window')
 ])
 
 
 ######### Interactive callbacks go here #########
-@app.callback(dash.dependencies.Output('display-value', 'figure'),
-              [dash.dependencies.Input('dropdown', 'value')])
+@app.callback(dash.dependencies.Output('my-output-window', 'figure'),
+              [dash.dependencies.Input('my-dropdown-input', 'value')])
 def display_value(user_input):
     results = df.groupby('Sex')[user_input].mean()
     mydata = [go.Bar(x = results.index,
